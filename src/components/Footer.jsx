@@ -30,7 +30,7 @@ export default function Footer() {
             <FaEnvelope />
           </motion.a>
           <motion.a
-            href="https://github.com/"
+            href="https://github.com/jubayer-bd"
             target="_blank"
             rel="noreferrer"
             whileHover={{ scale: 1.2 }}
