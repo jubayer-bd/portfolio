@@ -7,7 +7,7 @@ It showcases my projects, skills, and professional journey as a **Full-Stack Web
 
 ## 🚀 Live Preview
 
-🔗 [View Portfolio](https://portfolio-md-jubayer-hossain.netlify.app/)  
+🔗 [View Portfolio](https://jubayer-bd.netlify.app/)  
 
 
 ---
