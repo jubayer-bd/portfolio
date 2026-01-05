@@ -226,7 +226,7 @@ export default function Projects() {
             </p>
           </motion.div>
         </div>
-
+{/* hdsfh */}
         {/* Featured Project */}
         {loading ? (
           <FeaturedSkeleton />
