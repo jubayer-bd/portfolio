@@ -1,8 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaGithub, FaLinkedin, FaPaperPlane } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-// npm install @emailjs/browser
+import { MdAddIcCall } from "react-icons/md";// npm install @emailjs/browser
 import emailjs from "@emailjs/browser";
 
 export default function Contact() {
@@ -104,10 +103,10 @@ export default function Contact() {
                 color="hover:text-blue-400"
               />
               <ContactItem
-                icon={<FaXTwitter />}
-                label="Twitter"
-                value="x.com/jubayer_dev_bd"
-                href="https://x.com/jubayer_dev_bd"
+                icon={<MdAddIcCall />}
+                label="Phone"
+                value="+8801977898348"
+                href="callto:+8801977898348"
                 color="hover:text-blue-400"
               />
             </div>

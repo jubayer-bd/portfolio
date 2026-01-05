@@ -14,6 +14,7 @@ import {
 } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
 import SmoothScroll from "./components/SmoothScroll";
+import About from "./components/About";
 
 export default function Portfolio() {
   const [showTopBtn, setShowTopBtn] = useState(false);
@@ -49,7 +50,6 @@ export default function Portfolio() {
 
   return (
     <div className="relative min-h-screen text-slate-100 antialiased overflow-x-hidden">
-      
       {/* 🚀 Smooth Scroll (Lenis) */}
       <SmoothScroll />
 
@@ -77,6 +77,15 @@ export default function Portfolio() {
           <Hero />
         </motion.div>
 
+        {/* About */}
+        <motion.div
+          variants={sectionVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <About />
+        </motion.div>
         {/* Projects */}
         <motion.div
           variants={sectionVariant}

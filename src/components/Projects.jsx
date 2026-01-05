@@ -1,277 +1,327 @@
-import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { Github, ExternalLink, Code, ArrowRight } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
+import { Github, ExternalLink, X, Layers, AlertCircle, Lightbulb, ChevronLeft, ChevronRight } from "lucide-react";
 
-/* ---------------- Components: Skeletons ---------------- */
-const FeaturedSkeleton = () => (
-  <div className="w-full rounded-3xl border border-slate-800 bg-slate-900/40 p-8 mb-20 animate-pulse grid lg:grid-cols-2 gap-10">
-    <div className="h-64 rounded-xl bg-slate-800" />
-    <div className="flex flex-col gap-4">
-      <div className="h-4 w-32 bg-slate-800 rounded" />
-      <div className="h-10 w-3/4 bg-slate-800 rounded" />
-      <div className="h-20 w-full bg-slate-800 rounded" />
-      <div className="flex gap-2">
-        <div className="h-8 w-16 bg-slate-800 rounded" />
-        <div className="h-8 w-16 bg-slate-800 rounded" />
-      </div>
-    </div>
-  </div>
-);
+// --- DATA ---
+const PROJECTS_DATA = [
+  {
+    _id: "1",
+    title: "Digital Life Lessons",
+    desc: "A full-stack EdTech platform featuring role-based access, premium content control, and PDF report generation.",
+    tech: ["React", "Stripe", "Express", "MongoDB"],
+    live: "https://digital-life-lessons-web.netlify.app/",
+    repo: "https://github.com/jubayer-bd/Digital-Life-Lessons",
+    image: "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png",
+    challenges: "Implementing complex role-based access control (RBAC) securely while handling Stripe webhooks for real-time premium status updates.",
+    improvements: "Adding real-time chat between students and instructors and implementing AI-driven course recommendations.",
+  },
+  {
+    _id: "2",
+    title: "Utility Bills",
+    desc: "A dashboard to manage, pay, and track utility bills with a modern UI and analytics.",
+    tech: ["React", "Node.js", "MongoDB", "Recharts"],
+    live: "https://utility-bills-cfa.netlify.app/",
+    repo: "https://github.com/jubayer-bd/Utility_Bills_Client_Side",
+    image: "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png",
+    challenges: "Visualizing data effectively using charts and ensuring distinct separation of user data in a multi-tenant architecture.",
+    improvements: "Integration with real banking APIs for automated payments and SMS notifications for due dates.",
+  },
+  {
+    _id: "3",
+    title: "Warm Paws",
+    desc: "A responsive platform connecting pet owners with top-rated care services and winter tips.",
+    tech: ["React", "Firebase", "Tailwind", "Node.js"],
+    live: "https://pets-care-paws.netlify.app/",
+    repo: "https://github.com/jubayer-bd/Warm-Paws",
+    image: "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png",
+    challenges: "Creating a seamless booking system that handles time-zone differences and conflicting schedules.",
+    improvements: "Adding a verified review system for caregivers and a lost-and-found pet geolocation feature.",
+  },
+  {
+    _id: "4",
+    title: "Shop Hub",
+    desc: "A modern e-commerce app with cart functionality, wishlists, and secure authentication.",
+    tech: ["Next.js", "Firebase", "MongoDB", "Stripe"],
+    live: "https://shop-hub-coral.vercel.app/",
+    repo: "https://github.com/jubayer-bd/SHOP-HUB",
+    image: "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png",
+    challenges: "Optimizing image loading for thousands of products and managing global state for the shopping cart.",
+    improvements: "Implementing server-side rendering (SSR) for better SEO and adding a dark mode toggle.",
+  },
+  {
+    _id: "5",
+    title: "Task Master",
+    desc: "A Kanban-style project management tool with drag-and-drop capabilities.",
+    tech: ["React", "Redux", "DND-Kit", "Supabase"],
+    live: "#",
+    repo: "#",
+    image: "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png",
+    challenges: "Handling complex drag-and-drop state persistence across different columns.",
+    improvements: "Adding team collaboration features via WebSockets.",
+  },
+];
 
-const CardSkeleton = () => (
-  <div className="min-w-[320px] rounded-2xl border border-slate-800 bg-slate-900/40 p-5 animate-pulse flex flex-col gap-4">
-    <div className="h-40 rounded-lg bg-slate-800 w-full" />
-    <div className="h-6 w-2/3 bg-slate-800 rounded" />
-    <div className="h-16 w-full bg-slate-800 rounded" />
-    <div className="flex gap-2 mt-auto">
-      <div className="h-6 w-12 bg-slate-800 rounded" />
-      <div className="h-6 w-12 bg-slate-800 rounded" />
-    </div>
-  </div>
-);
-
-/* ---------------- Component: Featured Project ---------------- */
-const FeaturedProject = ({ project }) => (
-  <motion.article
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.5 }}
-    className="grid lg:grid-cols-2 gap-10 rounded-3xl border border-slate-800 
-               bg-slate-900/60 backdrop-blur-sm p-8 mb-20 shadow-2xl shadow-black/50"
-  >
-    {/* Image Container */}
-    <div className="relative aspect-video rounded-xl overflow-hidden group border border-slate-800/50">
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-    </div>
-
-    {/* Details */}
-    <div className="flex flex-col justify-center">
-      <span className="text-xs font-bold tracking-widest text-cyan-400 mb-4 uppercase">
-        Featured Project
-      </span>
-
-      <h3 className="text-3xl md:text-4xl font-bold text-slate-100 mb-4">
-        {project.title}
-      </h3>
-
-      <p className="text-slate-400 leading-relaxed mb-6 text-base md:text-lg">
-        {project.desc}
-      </p>
-
-      {/* Tech Stack */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {project.tech.map((t) => (
-          <span
-            key={t}
-            className="text-xs font-medium text-cyan-300 bg-cyan-950/30 
-                       border border-cyan-500/20 px-3 py-1 rounded-full"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
-
-      {/* Actions */}
-      <div className="flex items-center gap-4 mt-auto">
-        {project.live && (
-          <a
-            href={project.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 md:px-6 py-3 rounded-lg 
-                       bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold  md:font-bold transition-colors"
-          >
-            Live Demo <ExternalLink size={16} />
-          </a>
-        )}
-
-        {project.repo && (
-          <a
-            href={project.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg 
-                       border border-slate-700 hover:border-slate-500 text-slate-300 
-                       hover:text-white transition-colors bg-slate-900"
-          >
-            <Github size={18} /> Source
-          </a>
-        )}
-      </div>
-    </div>
-  </motion.article>
-);
-
-/* ---------------- Component: Slider Card ---------------- */
-const SliderCard = ({ project }) => (
-  <motion.div
-    className="min-w-[320px] max-w-[320px] flex-shrink-0 flex flex-col
-               rounded-2xl  bg-slate-900/50 backdrop-blur-sm
-               hover:border-cyan-500/30 transition-colors duration-300 group"
-  >
-    {/* Image */}
-    <div className=" rounded-t-2xl overflow-hidden relative">
-      <img
-        src={project.image}
-        alt={project.title}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors" />
-    </div>
-
-    {/* Content */}
-    <div className="p-5 flex flex-col flex-grow">
-      <h4 className="text-xl font-bold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors">
-        {project.title}
-      </h4>
-
-      <p className="text-sm text-slate-400 mb-4 line-clamp-3 leading-relaxed">
-        {project.desc}
-      </p>
-
-      {/* Tech Tags (Limited to 3) */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {project.tech?.slice(0, 3).map((t) => (
-          <span
-            key={t}
-            className="text-[10px] uppercase tracking-wider text-slate-300 
-                       bg-slate-800/50 px-2 py-1 rounded border border-slate-700"
-          >
-            {t}
-          </span>
-        ))}
+// --- COMPONENT: PROJECT CARD ---
+const ProjectCard = ({ project, onClick }) => {
+  return (
+    <motion.div
+      layoutId={`card-${project._id}`}
+      onClick={() => onClick(project)}
+      className="group relative flex flex-col h-full w-full bg-slate-800/40 border border-slate-700/50 backdrop-blur-sm rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-colors cursor-pointer"
+    >
+      {/* Image Section */}
+      <div className="relative h-48 overflow-hidden">
+        <motion.img
+          layoutId={`image-${project._id}`}
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent opacity-60" />
       </div>
 
-      {/* Footer Links */}
-      <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-800">
-        <a
-          href={project.repo}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 text-sm text-slate-500 hover:text-white transition-colors"
+      {/* Content Section */}
+      <div className="flex flex-col flex-grow p-5">
+        <motion.h3 
+          layoutId={`title-${project._id}`}
+          className="text-lg font-bold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors"
         >
-          <Code size={16} /> Code
-        </a>
+          {project.title}
+        </motion.h3>
+        <p className="text-slate-400 text-sm line-clamp-2 mb-4">
+          {project.desc}
+        </p>
 
-        <a
-          href={project.live}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 text-sm font-semibold text-cyan-500 hover:text-cyan-300 transition-colors"
-        >
-          View <ArrowRight size={14} />
-        </a>
+        {/* Tech Stack Tags */}
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {project.tech.slice(0, 3).map((t, i) => (
+            <span
+              key={i}
+              className="px-2 py-1 text-[10px] uppercase tracking-wider font-medium text-cyan-300 bg-cyan-950/30 border border-cyan-500/20 rounded"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
-/* ---------------- Main Section ---------------- */
-export default function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Drag logic states
-  const [width, setWidth] = useState(0);
-  const carouselRef = useRef(null);
-
-  useEffect(() => {
-    fetch("/projects.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch projects:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  // Calculate draggable width once data is loaded
-  useEffect(() => {
-    if (carouselRef.current) {
-      setWidth(
-        carouselRef.current.scrollWidth - carouselRef.current.offsetWidth
-      );
-    }
-  }, [projects, loading]);
-
-  const featured = projects[0];
-  const rest = projects.slice(1);
+// --- COMPONENT: DETAILS MODAL ---
+const ProjectModal = ({ project, onClose }) => {
+  if (!project) return null;
 
   return (
-    <section id="projects" className="py-24  overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header Section */}
-        <div className="mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-100 tracking-tight">
-              Selected <span className="text-cyan-400">Works</span>
-            </h2>
-            <p className="mt-6 text-slate-400 text-lg">
-              A collection of projects showcasing my journey in building
-              scalable web applications and intuitive user interfaces.
-            </p>
-          </motion.div>
-        </div>
-{/* hdsfh */}
-        {/* Featured Project */}
-        {loading ? (
-          <FeaturedSkeleton />
-        ) : (
-          featured && <FeaturedProject project={featured} />
-        )}
+    <div className="fixed inset-0 z-[999] flex items-center justify-center px-4">
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm"
+      />
 
-        {/* Slider Section */}
-        {rest.length > 0 && (
-          <div className="relative mt-24">
-            <div className="flex items-end justify-between mb-8">
-              <h3 className="text-2xl font-bold text-slate-100">
-                More Projects
-              </h3>
-              <div className="hidden md:flex gap-2 text-cyan-200 justify-center text-sm">
-                <span className="text-cyan-200">Drag to explore</span>
-                <ArrowRight size={16} />
-              </div>
-            </div>
+      {/* Modal Content */}
+      <motion.div
+        layoutId={`card-${project._id}`}
+        className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden flex flex-col bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl z-10"
+      >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white backdrop-blur-md hover:bg-red-500/80 transition-all z-20"
+        >
+          <X size={20} />
+        </button>
 
-            {/* Draggable Area */}
-            <motion.div
-              ref={carouselRef}
-              className="cursor-grab active:cursor-grabbing overflow-hidden"
-              whileTap={{ cursor: "grabbing" }}
-            >
-              <motion.div
-                drag="x"
-                dragConstraints={{ right: 0, left: -width }}
-                className="flex gap-6 pb-8" // pb-8 to accommodate potential scrollbar or shadow clips
-              >
-                {loading
-                  ? [...Array(4)].map((_, i) => <CardSkeleton key={i} />)
-                  : rest.map((p, i) => (
-                      <SliderCard key={p._id || i} project={p} />
-                    ))}
-              </motion.div>
-            </motion.div>
-
-            {/* Fade Gradients for visual cue */}
-            <div className="pointer-events-none absolute top-12 right-0 h-[360px] w-24  z-10" />
-            <div className="pointer-events-none absolute top-12 left-0 h-[360px] w-12 z-10" />
+        {/* Modal Image */}
+        <div className="relative h-64 md:h-80 w-full flex-shrink-0">
+          <motion.img
+            layoutId={`image-${project._id}`}
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+          <div className="absolute bottom-6 left-6 right-6">
+            <motion.h2 layoutId={`title-${project._id}`} className="text-3xl md:text-4xl font-bold text-white mb-2">
+              {project.title}
+            </motion.h2>
           </div>
-        )}
+        </div>
+
+        {/* Scrollable Body */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8 space-y-8 bg-slate-900">
+          {/* Description */}
+          <div>
+            <h4 className="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+              <Layers size={18} /> About Project
+            </h4>
+            <p className="text-slate-300 leading-relaxed text-sm md:text-base">
+              {project.desc}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-slate-800/50 p-5 rounded-xl border border-slate-700/50">
+              <h4 className="text-base font-semibold text-red-300 mb-3 flex items-center gap-2">
+                <AlertCircle size={18} /> Challenges
+              </h4>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                {project.challenges}
+              </p>
+            </div>
+            <div className="bg-slate-800/50 p-5 rounded-xl border border-slate-700/50">
+              <h4 className="text-base font-semibold text-green-300 mb-3 flex items-center gap-2">
+                <Lightbulb size={18} /> Future Plans
+              </h4>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                {project.improvements}
+              </p>
+            </div>
+          </div>
+
+          {/* Links Footer */}
+          <div className="flex flex-wrap gap-4 pt-6 border-t border-slate-800 mt-auto">
+            <a href={project.live} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white py-3 rounded-lg font-bold transition-all shadow-lg shadow-cyan-900/20">
+              <ExternalLink size={18} /> Live Demo
+            </a>
+            <a href={project.repo} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-lg font-medium border border-slate-700 transition-all">
+              <Github size={18} /> Source Code
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// --- COMPONENT: SLIDER ---
+const ProjectSlider = ({ projects, onProjectClick }) => {
+  const containerRef = useRef(null);
+  const [scrollX, setScrollX] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
+
+  // Calculate scrolling limits
+  const checkScroll = () => {
+    if (containerRef.current) {
+      setMaxScroll(containerRef.current.scrollWidth - containerRef.current.clientWidth);
+      setScrollX(containerRef.current.scrollLeft);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
+
+  const slide = (shift) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: shift, behavior: "smooth" });
+      // Update state after animation estimate
+      setTimeout(checkScroll, 300); 
+    }
+  };
+
+  return (
+    <div className="relative group">
+      {/* Left Arrow */}
+      {scrollX > 10 && (
+        <button
+          onClick={() => slide(-400)}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-40 p-3 bg-slate-800/90 border border-slate-600 text-cyan-400 rounded-full shadow-xl hover:bg-slate-700 transition-all hidden md:block"
+        >
+          <ChevronLeft size={24} />
+        </button>
+      )}
+
+      {/* Right Arrow */}
+      {scrollX < maxScroll - 10 && (
+        <button
+          onClick={() => slide(400)}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-40 p-3 bg-slate-800/90 border border-slate-600 text-cyan-400 rounded-full shadow-xl hover:bg-slate-700 transition-all hidden md:block"
+        >
+          <ChevronRight size={24} />
+        </button>
+      )}
+
+      {/* Slider Container */}
+      {/* SNAP SCROLLING logic added for native 'facebook-like' feel */}
+      <div
+        ref={containerRef}
+        onScroll={checkScroll}
+        className="flex overflow-x-auto gap-6 pb-8 pt-4 snap-x snap-mandatory hide-scrollbar"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {projects.map((project) => (
+          <div
+            key={project._id}
+            className="flex-none w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center"
+          >
+            <ProjectCard project={project} onClick={onProjectClick} />
+          </div>
+        ))}
       </div>
+    </div>
+  );
+};
+
+// --- MAIN SECTION ---
+export default function Projects() {
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [selectedProject]);
+
+  return (
+    <section id="projects" className="py-24 relative overflow-hidden bg-slate-950">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] -z-10" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -z-10" />
+
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 text-center max-w-3xl mx-auto"
+        >
+          <div className="inline-block px-4 py-1.5 mb-4 border border-cyan-500/20 bg-cyan-500/5 rounded-full">
+            <span className="text-cyan-400 text-sm font-semibold tracking-wide uppercase">Portfolio</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-100 mb-6">
+            Featured <span className="text-cyan-400">Projects</span>
+          </h2>
+          <p className="text-slate-400 text-lg">
+            A selection of my recent work, available for you to explore. 
+            Swipe to see more.
+          </p>
+        </motion.div>
+
+        {/* Slider Logic */}
+        <ProjectSlider projects={PROJECTS_DATA} onProjectClick={setSelectedProject} />
+        
+      </div>
+
+      {/* Modal Popup (Outside the overflow container to prevent clipping) */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -40,6 +40,9 @@ export default function Header() {
           order-3 sm:order-none
         "
       >
+        <a href="#about" className="text-slate-300 hover:text-teal-400 transition">
+          About
+        </a>
         <a href="#projects" className="text-slate-300 hover:text-teal-400 transition">
           Projects
         </a>
