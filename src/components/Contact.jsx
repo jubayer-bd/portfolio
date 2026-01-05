@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaGithub, FaLinkedin, FaPaperPlane } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 // npm install @emailjs/browser
 import emailjs from "@emailjs/browser";
 
@@ -100,6 +101,13 @@ export default function Contact() {
                 label="LinkedIn"
                 value="linkedin.com/in/dev-jubayer"
                 href="https://www.linkedin.com/in/dev-jubayer/"
+                color="hover:text-blue-400"
+              />
+              <ContactItem
+                icon={<FaXTwitter />}
+                label="Twitter"
+                value="x.com/jubayer_dev_bd"
+                href="https://x.com/jubayer_dev_bd"
                 color="hover:text-blue-400"
               />
             </div>

@@ -1,0 +1,39 @@
+[
+  {
+    "_id": "694d32ee4bee25d127646aab",
+    "title": "Digital Life Lessons",
+    "desc": "Digital Life Lessons – EdTech Platform A full-stack learning platform featuring authentication, role-based access, premium content control, lesson management, and PDF report generation.",
+    "tech": ["React", "Role Based Authentication", "Premium Content", "Stripe"],
+    "live": "https://digital-life-lessons-web.netlify.app/",
+    "repo": "https://github.com/jubayer-bd/Digital-Life-Lessons",
+    "image": "https://i.ibb.co.com/5XnnqJc1/digital-Life-Lesson.png"
+  },
+  {
+    "_id": "6931b52f8e7f6fc61ceddaf6",
+    "title": "Utility Bills",
+    "desc": "A complete full-stack web application built with the MERN Stack that allows users to manage, pay, and track their utility bills from one place — all with a modern UI and smooth experience.",
+    "tech": ["React", "Node.js", "MongoDB", "Express"],
+    "live": "https://utility-bills-cfa.netlify.app/",
+    "repo": "https://github.com/jubayer-bd/Utility_Bills_Client_Side",
+    "image": "/utility-bills.png"
+  },
+  {
+    "_id": "6931b52f8e7f6fc61ceddaf7",
+    "title": "Warm Paws",
+    "desc": "WarmPaws is a responsive React web application that helps pet owners find top-rated pet care services and winter care tips to keep their furry friends healthy and happy.",
+    "tech": ["React", "Firebase", "Node.js", "MongoDB"],
+    "live": "https://pets-care-paws.netlify.app/",
+    "repo": "https://github.com/jubayer-bd/Warm-Paws",
+    "image": "/warm-paws.png"
+  },
+  {
+    "_id": "6931b52f8e7f6fc61ceddaf8",
+    "title": "Shop Hub",
+    "desc": "A modern, responsive full-stack e-commerce application built using Next.js on the frontend and Express.js + MongoDB on the backend. Includes authentication, cart, wishlist, dynamic product pages, and polished UI.",
+    "tech": ["Next.js", "Firebase", "MongoDB", "Express.js"],
+    "live": "https://shop-hub-coral.vercel.app/",
+    "repo": "https://github.com/jubayer-bd/SHOP-HUB",
+    "image": "/public/screenshot-20251226100528.png"
+  }
+  
+]

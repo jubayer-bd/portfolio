@@ -2,78 +2,124 @@ import React from "react";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 
-// Removed all react-icons imports
-
-// No image import needed, as you confirmed the path works (assumes public folder access)
-
 export default function Hero() {
   return (
-    <section className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <section className="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       
-      {/* LEFT SIDE: Content and Buttons */}
+      {/* LEFT: Content */}
       <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, x: -40 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: { staggerChildren: 0.15 },
+          },
+        }}
       >
-        <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-slate-100">
+        {/* Small intro badge */}
+        <motion.span
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          className="inline-block mb-4 px-4 py-1 text-sm rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+        >
+          👋 Hello, I’m a Full-Stack Developer
+        </motion.span>
+
+        {/* Headline */}
+        <motion.h1
+          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+          className="text-4xl sm:text-5xl font-bold leading-tight text-slate-100"
+        >
+          I build{" "}
+          <span className="relative text-cyan-400">
+            scalable & user-focused
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-cyan-400/60 rounded" />
+          </span>{" "}
+          web applications
+        </motion.h1>
+
+        {/* Animated role text */}
+        <motion.div
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          className="mt-5 text-lg text-slate-300"
+        >
           <TypeAnimation
             sequence={[
-              "Building modern web apps with React and Next.js ⚛️",
+              "React & Next.js Frontend Engineering",
               1500,
-              "Crafting scalable backends with Node.js, Express and MongoDB 🛠️",
+              "Node.js, Express & MongoDB Backends",
               1500,
-              "Designing smooth UIs with Tailwind 💎",
+              "Modern UI with Tailwind CSS",
               1500,
             ]}
-            wrapper="span"
-            speed={50}
+            speed={55}
             repeat={Infinity}
           />
-        </h2>
+        </motion.div>
 
-        <p className="mt-6 text-slate-300 max-w-xl">
-          I’m a Full-Stack Web Developer focused on creating clean user
-          experiences and scalable backends.
-        </p>
+        {/* Description */}
+        <motion.p
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          className="mt-6 max-w-xl text-slate-400 leading-relaxed"
+        >
+          I focus on building clean, maintainable products that solve real
+          problems—balancing performance, usability, and scalability.
+          Comfortable working independently or as part of a team.
+        </motion.p>
 
-        <div className="mt-8 flex gap-3">
+        {/* CTAs */}
+        <motion.div
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          className="mt-10 flex flex-wrap gap-4"
+        >
           <a
             href="#projects"
-            className="px-4 py-2 rounded-md bg-gradient-to-r from-teal-500 to-cyan-400 text-slate-900 font-semibold shadow hover:scale-105 transition"
+            className="px-6 py-3 rounded-md bg-gradient-to-r from-cyan-500 to-teal-400 
+                       text-slate-900 font-semibold shadow-lg 
+                       hover:scale-105 hover:shadow-cyan-500/30 transition"
           >
             View Projects
           </a>
+
           <a
-            // FIX: Mailto link corrected with placeholder domain.
-            href="https://drive.google.com/file/d/1Rsm1b5hnf6dK9fAO2A8WVE8ceZDarzgb/view" 
-            className="px-4 py-2 rounded-md border border-slate-700 text-slate-300 hover:bg-slate-800/50 hover:scale-105 transition"
+            href="https://drive.google.com/file/d/1Rsm1b5hnf6dK9fAO2A8WVE8ceZDarzgb/view"
+            target="_blank"
+            rel="noreferrer"
+            className="px-6 py-3 rounded-md border border-slate-700 
+                       text-slate-300 hover:bg-slate-800/60 
+                       hover:scale-105 transition"
           >
-           Download Resume
+            Download Resume
           </a>
-        </div>
+        </motion.div>
       </motion.div>
 
-      {/* RIGHT SIDE: Profile Image (No Icons/Animations) */}
+      {/* RIGHT: Profile */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative"
       >
-        <div className="w-full h-72 rounded-2xl bg-gradient-to-br from-slate-800/60 to-slate-700/40 border border-slate-800 flex items-center justify-center shadow-lg relative overflow-hidden">
-          <div className="relative text-center">
-            
-            <div className="relative w-36 h-36 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-cyan-400/50 mx-auto shadow-xl">
-              <img
-                // Keeping original path as requested (must be in public folder)
-                src="/218382681.jpeg" 
-                alt="Profile"
-                className="w-full h-full object-cover rounded-full"
-              />
-            </div>
-
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="w-full h-80 rounded-2xl bg-gradient-to-br 
+                     from-slate-800/60 to-slate-700/40 
+                     border border-slate-800 shadow-xl 
+                     flex items-center justify-center"
+        >
+          <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden 
+                          border-4 border-cyan-400/40 shadow-2xl">
+            <img
+              src="/218382681.jpeg"
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );
