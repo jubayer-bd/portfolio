@@ -35,6 +35,8 @@ import {
   SiGreensock,
   SiJsonwebtokens,
   SiReactquery,
+  SiC,
+  SiCaddy,
 } from "react-icons/si";
 
 /* ---------------- Data Structure ---------------- */
@@ -72,9 +74,10 @@ const skillCategories = [
     ],
   },
   {
-    title: "Tools & Workflow",
+    title: "Tools & Languages",
     icon: <Terminal className="w-6 h-6" />,
     skills: [
+      {name: "C", icon: <SiC className="text-blue-600" />},
       { name: "Git", icon: <FaGitAlt className="text-orange-500" /> },
       { name: "Postman", icon: <SiPostman className="text-orange-400" /> },
       { name: "Axios", icon: <SiAxios className="text-purple-400" /> },
