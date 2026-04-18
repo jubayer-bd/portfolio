@@ -24,7 +24,7 @@ export default function Hero() {
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
           className="inline-block mb-4 px-4 py-1 text-sm rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
         >
-          👋 Hello, I’m a Full-Stack Developer
+          👋 Hello, I’m a MERN-Stack Developer
         </motion.span>
 
         {/* Headline */}

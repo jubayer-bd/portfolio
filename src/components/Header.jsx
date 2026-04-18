@@ -30,7 +30,7 @@ export default function Header() {
         >
           Md. Jubayer Hossain
         </motion.h1>
-        <p className="text-sm text-slate-400">Full-Stack Web Developer</p>
+        <p className="text-sm text-slate-400">MERN-Stack Web Developer</p>
       </div>
 
       {/* MIDDLE ROUTES */}
